@@ -20,12 +20,10 @@ public class RandomAI extends AbstractPlayer {
 		return moves.get(rng.nextInt(moves.size()));
 	}
 
-	@Override
 	public int studentID() {
 		return 201505298;
 	}
 
-	@Override
 	public String studentName() {
 		return "Chadha Degachi";
 	}

@@ -9,6 +9,6 @@ public interface Player {
 	MOVE getMove(State game);
 	JPanel getPlayerPanel();
 	void reset();
-	int studentID();
-	String studentName();
+	//int studentID();
+	//String studentName();
 }
