@@ -2,15 +2,16 @@ package ai;
 
 import eval.BonusEvaluator;
 import eval.Evaluator;
-import eval.ScoreEvaluator;
 import model.AbstractState;
 import model.State;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MinMax extends AbstractPlayer {
     int depthLimit = 6;
     double best;
+    HashMap< State, Integer> stateMove = new HashMap<>();
     State winningState;
     Evaluator ev = new BonusEvaluator(); // make average of all evaluators
 
@@ -20,9 +21,9 @@ public class MinMax extends AbstractPlayer {
 
         List<AbstractState.MOVE> moves = game.getMoves();
 
-        minmax(game, 6, true);
+        minmax(game, depthLimit, true);
 
-        return null;
+        return moves.get(stateMove.get(winningState));
     }
 
     public Double minmax(State node, int depth, boolean maxP){
@@ -32,7 +33,12 @@ public class MinMax extends AbstractPlayer {
         }else {
             if(maxP){
                 best = Double.NEGATIVE_INFINITY;
-                node.nextFirstHalfMoveStates();
+
+                State[] next = node.nextFirstHalfMoveStates();
+                for(int i  = 0; i < next.length; i ++){
+                    stateMove.put(next[i], i);
+                }
+
                 for(State child : node.nextSecondHalfMoveStates()){
                     double currentValue = minmax(child, depth -1, false);
                     best = Math.max(best, currentValue);
@@ -44,7 +50,12 @@ public class MinMax extends AbstractPlayer {
 
             }else{
                 best = Double.POSITIVE_INFINITY;
-                node.nextFirstHalfMoveStates();
+
+                State[] next = node.nextFirstHalfMoveStates();
+                for(int i  = 0; i < next.length; i ++){
+                    stateMove.put(next[i], i);
+                }
+
                 for(State child : node.nextSecondHalfMoveStates()){
                     double currentValue = minmax(child, depth -1, true);
                     best = Math.min(best, currentValue);
