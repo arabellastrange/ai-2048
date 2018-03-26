@@ -2,62 +2,66 @@ package ai;
 
 import eval.BonusEvaluator;
 import eval.Evaluator;
-import eval.ScoreEvaluator;
 import model.AbstractState;
 import model.State;
 
 import java.util.List;
 
 public class MinMax extends AbstractPlayer {
-    int depthLimit = 6;
-    double best;
-    State winningState;
+    State initial;
+    int depthLimit = 5;
+    AbstractState.MOVE winningMove;
+    double winningMoveScore;
     Evaluator ev = new BonusEvaluator(); // make average of all evaluators
 
     @Override
     public AbstractState.MOVE getMove(State game) {
         pause();
 
-        List<AbstractState.MOVE> moves = game.getMoves();
+        initial = game.copy();
 
-        minmax(game, 6, true);
+        List<AbstractState.MOVE> moves = initial.getMoves();
+        winningMove = moves.get(0);
+        winningMoveScore = Double.NEGATIVE_INFINITY;
 
-        return null;
+        for(AbstractState.MOVE m : moves){
+            initial.halfMove(m);
+            double newScore = minmax(initial, depthLimit, false);
+            if(newScore > winningMoveScore){
+                winningMoveScore = newScore;
+                winningMove = m;
+            }
+            initial.undo();
+        }
+
+        return winningMove;
     }
 
-    public Double minmax(State node, int depth, boolean maxP){
-        if(depth == 0){ // or is game over  - how to find out if game is over
-            return best = ev.evaluate(node);
+    public double minmax(State node, int depth, boolean maxP){
+        double best;
+        if(depth == 0){ // or is game over  - how to find out if game is over - if number of legal moves is 0
+            best = ev.evaluate(node);
 
         }else {
             if(maxP){
                 best = Double.NEGATIVE_INFINITY;
-                node.nextFirstHalfMoveStates();
-                for(State child : node.nextSecondHalfMoveStates()){
+                for(State child : node.nextFirstHalfMoveStates()){
                     double currentValue = minmax(child, depth -1, false);
                     best = Math.max(best, currentValue);
-                    if(best < currentValue){
-                       winningState = child;
-                    }
-                    return best;
+
                 }
 
             }else{
                 best = Double.POSITIVE_INFINITY;
-                node.nextFirstHalfMoveStates();
                 for(State child : node.nextSecondHalfMoveStates()){
                     double currentValue = minmax(child, depth -1, true);
                     best = Math.min(best, currentValue);
-                    if(best > currentValue){
-                        winningState = child;
-                    }
-                    return best;
                 }
 
             }
         }
 
-        return  0.0;
+        return  best;
     }
 
     /*
