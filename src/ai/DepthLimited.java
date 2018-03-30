@@ -11,8 +11,8 @@ import java.util.Stack;
 
 public class DepthLimited extends AbstractPlayer {
     State initial;
-    int depth = 4;
-    int iterations = 64;
+    int depth = 3;
+    int iterations = 16;
 
     Stack<State> stack = new Stack<>();
     ArrayList<State> visited = new ArrayList<>();
@@ -103,8 +103,10 @@ public class DepthLimited extends AbstractPlayer {
                 double childrenScore = 0;
 
                 for (State child : children){
-                    childrenScore += ev.evaluate(child);
-                    stack.push(child);
+                    if(!visited.contains(child)){
+                        childrenScore += ev.evaluate(child);
+                        stack.push(child);
+                    }
                 }
 
                 parent += (childrenScore/children.length);

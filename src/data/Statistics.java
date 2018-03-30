@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Supplier;
 
+import ai.MinMax;
 import ai.Player;
 import ai.RandomAI;
 import model.AbstractState.MOVE;
@@ -146,7 +147,7 @@ public class Statistics {
 	}
 
 	public static void main(String[] args) {
-		Statistics s = new Statistics(100, () -> new RandomAI());
+		Statistics s = new Statistics(100, () -> new MinMax());
 		s.begin();
 		System.out.println(s);
 		// FileWriter results = null;
