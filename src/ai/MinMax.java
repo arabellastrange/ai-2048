@@ -47,17 +47,23 @@ public class MinMax extends AbstractPlayer {
         if(maxP){
             best = Double.NEGATIVE_INFINITY;
             for(State child : node.nextFirstHalfMoveStates()){
-                double currentValue = minmax(child, depth -1, false);
-                best = Math.max(best, currentValue);
-                return best;
+                if(child != null){
+                    double currentValue = minmax(child, depth -1, false);
+                    best = Math.max(best, currentValue);
+                    return best;
+                }
             }
 
         }else{
             best = Double.POSITIVE_INFINITY;
+            //node.nextFirstHalfMoveStates();
             for(State child : node.nextSecondHalfMoveStates()){
-                double currentValue = minmax(child, depth -1, true);
-                best = Math.min(best, currentValue);
-                return best;
+                if(child != null){
+                    double currentValue = minmax(child, depth -1, true);
+                    best = Math.min(best, currentValue);
+                    return best;
+                }
+
             }
 
         }

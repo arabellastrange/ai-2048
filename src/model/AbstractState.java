@@ -68,18 +68,27 @@ public abstract class AbstractState implements State {
 	}
 
 	@Override
-	public State[] nextFirstHalfMoveStates() {
-		State[] children = new State[4];
-		for (MOVE move : MOVE.values()) {
-			halfMove(move);
-			children[move.ordinal()] = new BinaryState(toLong(), score);
-			if (getMoves().contains(move)) {
-				undo();
-			}
+    public State[] nextFirstHalfMoveStates() {
+        State[] children = new State[4];
+        for (MOVE move : getMoves()) {
+            halfMove(move);
+            children[move.ordinal()] = new BinaryState(toLong(), score);
+            undo();
+        }
+        /*System.out.println("number of possible player moves  " + children.length);
 
-		}
-		return children;
-	}
+        for (State c: children){
+            if(c != null){
+                System.out.println("state: "+ c.toString());
+                for (int i = 0; i < c.getBoardArray().length; i++){
+                    for (int n = 0; n <c.getBoardArray()[i].length ; n++) {
+                        System.out.println("Tiles: " + c.getBoardArray()[i][n]);
+                    }
+                }
+            }
+		}*/
+        return children;
+    }
 
 	@Override
 	public StateData toStateData() {
