@@ -11,24 +11,25 @@ import java.util.Stack;
 
 public class DepthLimited extends AbstractPlayer {
     State initial;
-    int depth = 3;
-    int iterations = 16;
+    int depth = 4;
+    int iterations = 64;
 
     Stack<State> stack = new Stack<>();
     ArrayList<State> visited = new ArrayList<>();
 
     AbstractState.MOVE winningMove;
     ArrayList<Integer> winningMoves = new ArrayList<>();
-
     double winningMoveScore;
+
     Evaluator ev = new BonusEvaluator();
+
+    int instanceU = 0;
+    int instanceD = 0;
+    int instanceL = 0;
+    int instanceR = 0;
 
     @Override
     public AbstractState.MOVE getMove(State game) {
-        int instanceU = 0;
-        int instanceD = 0;
-        int instanceL = 0;
-        int instanceR = 0;
         pause();
         initial = game.copy();
         stack.push(initial);
@@ -37,7 +38,7 @@ public class DepthLimited extends AbstractPlayer {
         winningMove = moves.get(0);
         winningMoveScore = Double.NEGATIVE_INFINITY;
 
-        for(int i = 0; i < iterations; i ++){
+        for(int i = 0; i < iterations; i++){
             for(AbstractState.MOVE move : moves){
                 initial.halfMove(move);
                 double newScore = dfs();
@@ -92,26 +93,31 @@ public class DepthLimited extends AbstractPlayer {
     public Double dfs(){
         int currentDepth = 0;
         double parent  = 0;
+        double childrenScore;
 
         while (!stack.isEmpty()){
             if(currentDepth < depth){
                 State c = stack.pop();
-                parent  = ev.evaluate(c);
-
+                if(c != null){
+                    parent  = ev.evaluate(c);
+                }
                 visited.add(c);
-                State[] children = c.nextFirstHalfMoveStates();
-                double childrenScore = 0;
 
+
+                State[] children = c.nextFirstHalfMoveStates();
+                childrenScore = 0;
                 for (State child : children){
-                    if(!visited.contains(child)){
-                        childrenScore += ev.evaluate(child);
-                        stack.push(child);
+                    if(child != null){
+                        if(!visited.contains(child) && !stack.contains(child)){
+                            childrenScore += ev.evaluate(child);
+                            stack.push(child);
+                            //visited.add(child);
+                        }
                     }
                 }
 
                 parent += (childrenScore/children.length);
                 currentDepth++;
-
             }
         }
 
