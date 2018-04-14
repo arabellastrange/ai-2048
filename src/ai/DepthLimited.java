@@ -5,20 +5,20 @@ import eval.Evaluator;
 import model.AbstractState;
 import model.State;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
 public class DepthLimited extends AbstractPlayer {
     State initial;
-    int depth = 4;
+    int depth = 5;
     int iterations = 64;
 
     Stack<State> stack = new Stack<>();
-    ArrayList<State> visited = new ArrayList<>();
+    HashSet<State> visited = new HashSet<>();
 
     AbstractState.MOVE winningMove;
-    ArrayList<Integer> winningMoves = new ArrayList<>();
+    int[] winningMoves = new int[4];
     double winningMoveScore;
 
     Evaluator ev = new BonusEvaluator();
@@ -31,44 +31,46 @@ public class DepthLimited extends AbstractPlayer {
     @Override
     public AbstractState.MOVE getMove(State game) {
         pause();
+
         initial = game.copy();
         stack.push(initial);
 
         List<AbstractState.MOVE> moves = initial.getMoves();
         winningMove = moves.get(0);
         winningMoveScore = Double.NEGATIVE_INFINITY;
-
         for(int i = 0; i < iterations; i++){
             for(AbstractState.MOVE move : moves){
                 initial.halfMove(move);
                 double newScore = dfs();
                 if(newScore > winningMoveScore){
                     winningMoveScore = newScore;
-                    switch (move){
-                        case UP:
-                            winningMoves.add(0, instanceU++);
-                            break;
-                        case DOWN:
-                            winningMoves.add(1,instanceD++);
-                            break;
-                        case LEFT:
-                            winningMoves.add(2, instanceL++);
-                            break;
-                        case RIGHT:
-                            winningMoves.add(3, instanceR++);
-                            break;
-                    }
+                    winningMove = move;
                 }
                 initial.undo();
             }
-            //reset score
+
+            switch (winningMove){
+                case UP:
+                    winningMoves[0] = instanceU++;
+                    break;
+                case DOWN:
+                    winningMoves[1] = instanceD++;
+                    break;
+                case LEFT:
+                    winningMoves[2] = instanceL++;
+                    break;
+                case RIGHT:
+                    winningMoves[3] = instanceR++;
+                    break;
+            }
+
             winningMoveScore = Double.NEGATIVE_INFINITY;
         }
 
         double best = Double.NEGATIVE_INFINITY;
-        for(int i = 0; i < winningMoves.size(); i++){
-            if(winningMoves.get(i) > best){
-                best = winningMoves.get(i);
+        for(int i = 0; i < winningMoves.length; i++){
+            if(winningMoves[i] > best){
+                best = winningMoves[i];
                 switch (i){
                     case 0:
                         winningMove = AbstractState.MOVE.UP;
@@ -95,8 +97,8 @@ public class DepthLimited extends AbstractPlayer {
         double parent  = 0;
         double childrenScore;
 
-        while (!stack.isEmpty()){
-            if(currentDepth < depth){
+        while (!stack.isEmpty() && currentDepth < depth){
+            //if(currentDepth < depth){
                 State c = stack.pop();
                 if(c != null){
                     parent  = ev.evaluate(c);
@@ -118,7 +120,7 @@ public class DepthLimited extends AbstractPlayer {
 
                 parent += (childrenScore/children.length);
                 currentDepth++;
-            }
+            //}
         }
 
         return parent;
