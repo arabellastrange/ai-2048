@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MinMax extends AbstractPlayer {
     State initial;
-    int depthLimit = 5;
+    int depthLimit = 6;
     AbstractState.MOVE winningMove;
     double winningMoveScore;
     Evaluator ev = new BonusEvaluator(); // make average of all evaluators
@@ -54,9 +54,12 @@ public class MinMax extends AbstractPlayer {
                 }
             }
 
+            //for (AbstractState.MOVE m : node.getMoves()){
+                //hmmm
+           //}
+
         }else{
             best = Double.POSITIVE_INFINITY;
-            //node.nextFirstHalfMoveStates();
             for(State child : node.nextSecondHalfMoveStates()){
                 if(child != null){
                     double currentValue = minmax(child, depth -1, true);
@@ -67,7 +70,6 @@ public class MinMax extends AbstractPlayer {
             }
 
         }
-
         return -1.0;
     }
 

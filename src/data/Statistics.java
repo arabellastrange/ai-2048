@@ -145,7 +145,7 @@ public class Statistics {
 	}
 
 	public static void main(String[] args) {
-		Statistics s = new Statistics(100, () -> new DepthLimited3());
+		Statistics s = new Statistics(10, () -> new DepthLimited2());
 		s.begin();
 		System.out.println(s);
 		// FileWriter results = null;
