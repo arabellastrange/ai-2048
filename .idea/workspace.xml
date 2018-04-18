@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="541119a4-a55c-4f5e-bdf0-f723cc870c13" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/ai/DepthLimited2.java" afterPath="$PROJECT_DIR$/src/ai/DepthLimited2.java" />
-      <change beforePath="$PROJECT_DIR$/src/ai/DepthLimited3.java" afterPath="$PROJECT_DIR$/src/ai/DepthLimited3.java" />
-      <change beforePath="$PROJECT_DIR$/src/data/Statistics.java" afterPath="$PROJECT_DIR$/src/data/Statistics.java" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -392,7 +389,14 @@
       <option name="project" value="LOCAL" />
       <updated>1523735816438</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="depth limited version 3.0">
+      <created>1524047021769</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1524047021769</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -400,6 +404,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="PlantUML" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -444,7 +449,8 @@
     <MESSAGE value="still fighting depthlimited" />
     <MESSAGE value="depth limited version 3" />
     <MESSAGE value="sigh" />
-    <option name="LAST_COMMIT_MESSAGE" value="sigh" />
+    <MESSAGE value="depth limited version 3.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="depth limited version 3.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
