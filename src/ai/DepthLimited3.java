@@ -1,17 +1,18 @@
 package ai;
 
 import eval.BonusEvaluator;
-import eval.Evaluator;
 import model.AbstractState;
 import model.State;
 import java.util.List;
+import java.util.Random;
 
 public class DepthLimited3 extends AbstractPlayer {
-    int depth = 200; //4
-    int iterations = 400; //64
+    int depth = 6; //4
+    int iterations = 700; //64
     double best;
-    Evaluator ev = new BonusEvaluator();
+    Random random;
     AbstractState.MOVE winningMove;
+    BonusEvaluator ev = new BonusEvaluator();
 
     @Override
     public AbstractState.MOVE getMove(State game) {
@@ -29,26 +30,21 @@ public class DepthLimited3 extends AbstractPlayer {
     }
 
     private double runSimulation(AbstractState.MOVE move, State node) {
+        random = new Random();
         int score = 0;
         int currentDepth;
         for(int i = 0; i < iterations; i++){
             State copy = node.copy();
             copy.move(move);
-            for(currentDepth = 0; currentDepth < depth && !copy.getMoves().isEmpty(); currentDepth++){
-                double best = Double.NEGATIVE_INFINITY;
+            currentDepth = 0;
+            while(currentDepth < depth && !copy.getMoves().isEmpty()){
                 List<AbstractState.MOVE> moves = copy.getMoves();
-                AbstractState.MOVE bestNextMove = moves.get((int) Math.random() * moves.size());
-                //for(AbstractState.MOVE m : moves){
-                    // copy.move(m);
-                    //double nextscore = runSimulation(m, copy);
-                    //if(nextscore > best){
-                     //   best = nextscore;
-                     //   bestNextMove = m;
-                    //}
-                //}
+                AbstractState.MOVE bestNextMove = moves.get(random.nextInt(moves.size()));
                 copy.move(bestNextMove);
+                currentDepth++;
             }
-            score += copy.getScore();
+            //score += copy.getScore();
+            score += ev.evaluate(copy);
             copy.undo();
         }
 

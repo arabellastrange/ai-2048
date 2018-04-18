@@ -17,12 +17,12 @@ public class DepthLimited2 extends AbstractPlayer {
         moveScoreMap = new HashMap<>();
         List<AbstractState.MOVE> moves = game.getMoves();
 
-        for (int n = 0; n < 256; n++){
+        for (int n = 0; n < 500 ; n++){
             for(AbstractState.MOVE m : moves){
                 if(moveScoreMap.containsKey(m)){
                     moveScoreMap.put(m, moveScoreMap.get(m) + dls(game.copy(), 64));
                 } else {
-                    moveScoreMap.put(m, dls(game.copy(), 4));
+                    moveScoreMap.put(m, dls(game.copy(), 64));
                 }
             }
         }
